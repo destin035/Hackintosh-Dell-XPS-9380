@@ -84,6 +84,14 @@ unzip -q $CWD/downloads/VoodooI2C.zip -d $t
 cp -rv $t/VoodooI2C.kext    $CWD/EFI/OC/Kexts/
 cp -rv $t/VoodooI2CHID.kext $CWD/EFI/OC/Kexts/
 
+r=acidanthera/CPUFriend
+t=$CWD/downloads/CPUFriend
+v=$(curl -sL https://api.github.com/repos/$r/releases/latest | jq -r ".tag_name")
+echo "CPUFriend version: $v" | tee -a $CWD/EFI/buildinfo
+curl -sL -o $CWD/downloads/CPUFriend.zip https://github.com/$r/releases/download/$v/CPUFriend-$v-RELEASE.zip
+unzip -q $CWD/downloads/CPUFriend.zip -d $t
+cp -rv $t/CPUFriend.kext $CWD/EFI/OC/Kexts/
+
 git clone https://github.com/acpica/acpica $CWD/downloads/acpica
 CFLAGS="-Wno-dangling-pointer" make -C $CWD/downloads/acpica -j 4 iasl
 iasl=$CWD/downloads/acpica/generate/unix/bin/iasl
