@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y git build-essential jq curl
+
+      - name: Build and package
+        run: |
+          bash build.sh
+          tar zcvf EFI-${GITHUB_SHA::6}.tar.gz EFI
+
+      - uses: actions/upload-artifact@v3.1.0
+        with:
+          path: |
+            EFI-${GITHUB_SHA::6}.tar.gz
+            buildinfo
