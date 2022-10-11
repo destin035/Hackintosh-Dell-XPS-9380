@@ -85,7 +85,7 @@ cp -rv $t/VoodooI2C.kext    $CWD/EFI/OC/Kexts/
 cp -rv $t/VoodooI2CHID.kext $CWD/EFI/OC/Kexts/
 
 git clone https://github.com/acpica/acpica $CWD/downloads/acpica
-CFLAGS="-Wno-dangling-pointer" make -C $CWD/downloads/acpica -j 4 iasl
+CFLAGS="-Wno-dangling-pointer" make -C $CWD/downloads/acpica -j $(nproc) iasl
 iasl=$CWD/downloads/acpica/generate/unix/bin/iasl
 
 $iasl $CWD/AcpiSource/SSDT-EC-USBX.dsl
@@ -94,3 +94,8 @@ $iasl $CWD/AcpiSource/SSDT-AWAC-DISABLE.dsl
 $iasl $CWD/AcpiSource/SSDT-PNLF.dsl
 cp -v $CWD/AcpiSource/*.aml $CWD/EFI/OC/ACPI/
 cp -v $CWD/config.plist     $CWD/EFI/OC/
+
+rm -rfv $CWD/EFI/OC/Kexts/VoodooPS2Controller.kext/Contents/PlugIns/VoodooInput.kext
+rm -rfv $CWD/EFI/OC/Kexts/VoodooPS2Controller.kext/Contents/PlugIns/VoodooPS2Mouse.kext
+rm -rfv $CWD/EFI/OC/Kexts/VoodooPS2Controller.kext/Contents/PlugIns/VoodooPS2Trackpad.kext
+rm -rfv $CWD/EFI/OC/Kexts/VoodooI2C.kext/Contents/PlugIns/VoodooInput.kext/Contents/_CodeSignature
